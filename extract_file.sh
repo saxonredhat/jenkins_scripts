@@ -46,6 +46,15 @@ if [ x"$UPDATE_TYPE" == x"INC" ];then
 	while read file;do
 		echo -e "\033[32m抽取文件 /$file ${ECHO_SUFFIX}" |tee -a $LOG_DIR/$LOG_FILE 
 		cp -r --parents $file $EXTACT_DIR/$PROJECT_NAME
+		#抽取内部内
+		if [ x"${file##*.}" == x"class" ];then
+			file_prefix="${file%.*}"	
+			file_subfix="${file##*.}"
+			file_ex="${file_prefix}\$*.$file_subfix"
+			cp -r --parents $file_ex $EXTACT_DIR/$PROJECT_NAME
+		fi
+			
+
 		[ $? -ne 0 ]&&FILE_FLAG=1
 	done < $TEMP_DIR/$TEMP_FILE
 elif [ x"$UPDATE_TYPE" == x"ALL" ];then
